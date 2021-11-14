@@ -15,7 +15,7 @@ ARG berkeleydbVersion=db-4.8.30.NC
 
 # Update \ && install tools \ install build dependencies \ install librairies \ && clean
 RUN apt-get update -y \
-  && apt-get install --no-install-recommends -y locales git wget vim \
+  && apt-get install --no-install-recommends -y ca-certificates locales git wget vim \
   build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 \
   libssl-dev libevent-dev libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev \
   && rm -rf /var/lib/apt/lists/* \

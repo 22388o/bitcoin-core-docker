@@ -2,7 +2,7 @@
 
 > Bitcoin full node from docker, built from source.
 
-Use bitcoin core from the command line inside the container. Once started, the server automatically downloads the blockchain. Make it persistent by mounting an external volume to `/root/.bitcoin`.
+Use bitcoin core from the command line inside the container. Once started, the server automatically downloads the bitcoin blockchain. Make it persistent by mounting an external volume to `/root/.bitcoin`.
 
 A `bitcoin.conf.template` configuration template file is available in the repo. Name it `bitcoin.conf` on the persistent drive for `bitcoind` to use it.
 
@@ -39,7 +39,7 @@ Use the `--build-arg` flag to tweak your build.
 
 | Software    | Default version      | --build-arg       |
 |-------------|----------------------|-------------------|
-| Ubuntu      | 18.04                | ubuntuVersion     |
+| Ubuntu      | 20.04                | ubuntuVersion     |
 | Bitcoin     | v0.20.1              | bitcoinVersion    |
 | Berkeley DB | db-4.8.30.NC         | berkeleydbVersion |
 
@@ -60,7 +60,7 @@ Use the `--build-arg` flag to tweak your build.
 # Use the image
 
 - Bitcoin core is launched in daemon mode as the container is started
-- It can run on the testnet or mainnet depending on you `bitcoin.conf` (regtest also possible)
+- It can run on the testnet or mainnet depending on you `bitcoin.conf` (regtest also available)
 
 ## Commands
 
