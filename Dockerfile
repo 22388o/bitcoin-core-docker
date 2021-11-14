@@ -1,25 +1,30 @@
-ARG ubuntuVersion=18.04
+ARG ubuntuVersion=20.04
 
 FROM ubuntu:${ubuntuVersion}
 
-LABEL maintainer="florent.dufour@univ-lorraine.fr"
-LABEL description="Bitcoin full node from docker, built from source, for amd and arm."
-LABEL version="0.20.1"
+LABEL maintainer="Florent Dufour <florent+github@dufour.xyz>"
+LABEL description="Bitcoin full node from docker, built from source."
+LABEL version="0.21.1"
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV TZ Europe/Paris
 
 # Available bitcoin versions: https://github.com/bitcoin/bitcoin/releases
-ARG bitcoinVersion=v0.20.1
+ARG bitcoinVersion=v0.21.1
 ARG berkeleydbVersion=db-4.8.30.NC
 
 # Update \ && install tools \ install build dependencies \ install librairies \ && clean
-RUN apt-get update -y \
-  && apt-get install -y locales git wget vim \
+RUN --mount=type=cache,target=/var/cache/apt apt-get update -y \
+  && apt-get install --no-install-recommends -y locales git wget vim \
   build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 \
   libssl-dev libevent-dev libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /root/.cache  \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Checkout bitcoin source:
 WORKDIR /tmp
-RUN git clone --verbose -b ${bitcoinVersion} --depth=1 https://github.com/bitcoin/bitcoin.git bitcoin/
+RUN git clone --verbose -b ${bitcoinVersion} --depth=1 https://github.com/bitcoin/bitcoin.git bitcoin
 
 # Install Berkeley Database:
 RUN wget http://download.oracle.com/berkeley-db/${berkeleydbVersion}.tar.gz && tar -xvf db-4.8.30.NC.tar.gz
@@ -37,13 +42,6 @@ RUN make && make install
 # System config:
 RUN echo "alias 'log=tail -f /root/.bitcoin/debug.log'" >> /root/.bashrc
 RUN echo "alias 'logtest=tail -f /root/.bitcoin/testnet3/debug.log'" >> /root/.bashrc
-
-# Cleanup:
-RUN apt-get autoremove -y
-RUN rm -rf /tmp/* \
-  && rm -rf /root/.cache  \
-  && rm -rf /var/cache/* \
-  && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 WORKDIR /
 ENTRYPOINT bitcoind

@@ -1,6 +1,6 @@
 # Introduction
 
-> Bitcoin full node from docker, built from source, for amd and arm.
+> Bitcoin full node from docker, built from source.
 
 Use bitcoin core from the command line inside the container. Once started, the server automatically downloads the blockchain. Make it persistent by mounting an external volume to `/root/.bitcoin`.
 
@@ -9,8 +9,10 @@ A `bitcoin.conf.template` configuration template file is available in the repo. 
 Example:
 
 ```shell
-~$ docker pull florentdufour/bitcoin:0.20.1
-~$ docker run -it --rm -v /mnt/bitcoin:/root/.bitcoin florentdufour/bitcoin:0.20.1
+~$ git clone https://github.com/f-dufour/bitcoin-core-docker.git
+~$ cd bitcoin-core-docker
+# Edit volumes in docker-compose.yaml
+~$ docker-compose up
 ```
 
 # Build the image
@@ -22,7 +24,8 @@ You may prefer to build the image yourself.
 ```shell
 ~$ git clone https://github.com/f-dufour/bitcoin-core-docker.git
 ~$ cd bitcoin-core-docker/
-~$ docker build -t bitcoin:0.20.1 .
+# Update your versions in Dockerfile
+~$ docker build -t bitcoin:version .
 ```
 
 * Will build the docker image with Ubuntu 18.04 and bitcoin core 0.20.1 by default.
