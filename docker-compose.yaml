@@ -1,13 +1,11 @@
 version: '3'
 
 services:
-    core:
-        build: .
-        container_name: bitcoin
-        hostname: bitcoin
-        ports:
-        - "5000:5000"
-        volumes:
-        - /mnt/bitcoin:/root/.bitcoin
-        stdin_open: true
-        tty: true
+  core:
+    build: .
+    container_name: bitcoin
+    hostname: bitcoin
+    ports:
+      - "5000:5000"
+    volumes:
+      - /tmp/bitcoin:/root/.bitcoin # Pick persistent location on host
